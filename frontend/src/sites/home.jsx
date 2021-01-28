@@ -13,7 +13,7 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState();
 
-    const isAdmin = localStorage.getItem('isAdmin');
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
 
     useEffect(() => {
         deviceService.getAvailable().then(devices => {
@@ -75,7 +75,6 @@ export default function Home() {
 
     return (
         <div className="col-md-6 col-md-offset-3 container">
-            {JSON.stringify(currentDevice)}
             <div className="row align-items-end">
                 <button className="btn" onClick={logout}>Logout</button>
             </div>
@@ -98,7 +97,7 @@ export default function Home() {
                             </select>
                         </div>
                         <div className="form-group">
-                            <button className="btn btn-primary" disabled={loading} visible={isAdmin}>Speichern</button>
+                            {isAdmin ? <button className="btn btn-primary" disabled={loading}>Speichern</button> : null }
                             {loading &&
                                 <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                             }
