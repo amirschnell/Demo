@@ -21,6 +21,7 @@ function login(username, password) {
                 // to keep user logged in between page refreshes
                 user.authdata = window.btoa(username + ':' + password);
                 localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('isAdmin', user.authorities.filter(a => a.authority === "ROLE_ADMIN").lenth > 0);
             }
 
             return user;

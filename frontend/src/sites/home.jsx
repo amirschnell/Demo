@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { deviceService } from '../services/deviceService';
 import { userService } from '../services/userService';
+import { rentalService } from '../services/rentalService';
 
 export default function Home() {
 
@@ -12,12 +13,15 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState();
 
+    const isAdmin = localStorage.getItem('isAdmin');
+
     useEffect(() => {
         deviceService.getAvailable().then(devices => {
             if (devices === []) {
                 return;
             }
             setDevices(devices);
+            console.log(devices)
         });
 
         deviceService.getTypes().then(types => setTypes(types));
@@ -50,8 +54,8 @@ export default function Home() {
 
         e.preventDefault();
 
-        setCurrentDevice(e.target.value);
-
+        setCurrentDevice(devices.find(d => d.id == e.target.value));
+        console.log(currentDevice)
     };
 
     let deviceNameChanged = function (e) {
@@ -61,9 +65,13 @@ export default function Home() {
     };
     let deviceTypeChanged = function (e) {
         let dev = currentDevice;
-        dev.type = e.target.value;
+        dev.type = types.find(t => t === e.target.value);
         setCurrentDevice(dev);
-    }
+    };
+
+    let rentCurrentDevice = function(e) {
+        rentalService.save(currentDevice);
+    };
 
     return (
         <div className="col-md-6 col-md-offset-3 container">
@@ -74,7 +82,7 @@ export default function Home() {
             <div className="row align-items-center">
                 <div className="col col-md-3">
                     <select onChange={deviceSelectionChanged}>
-                        {devices && devices.map((d) => <option key={d.id} value={d}>{d.name}</option>)}
+                        {devices && devices.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
                     </select>
                 </div>
                 <div className="col col-md-3">
@@ -86,11 +94,11 @@ export default function Home() {
                         <div className={'form-group' + (submitted && !currentDevice.type ? ' has-error' : '')}>
                             <label htmlFor="deviceType">Devicetype:</label>
                             <select className="form-control" name="deviceType" onChange={deviceTypeChanged} >
-                                {types && types.map((t) => <option value={t}>{t}</option>)}
+                                {types && types.map((t) => <option key={t} value={t}>{t}</option>)}
                             </select>
                         </div>
                         <div className="form-group">
-                            <button className="btn btn-primary" disabled={loading}>Speichern</button>
+                            <button className="btn btn-primary" disabled={loading} visible={isAdmin}>Speichern</button>
                             {loading &&
                                 <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                             }
@@ -99,6 +107,7 @@ export default function Home() {
                             <div className={'alert alert-danger'}>{error}</div>
                         }
                     </form>
+                    <button className="btn btn-primary" disabled={loading} onClick={rentCurrentDevice}>Ausleihen</button>
                 </div>
             </div>
         </div>
