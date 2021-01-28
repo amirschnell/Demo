@@ -1,8 +1,11 @@
 spring:
   datasource:
     url: jdbc:h2:file:~/device-manager
-    username: sa
-    password:
+    username: dm
+    password: dm
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
