@@ -8,19 +8,20 @@ import javax.persistence.*;
 @Data
 public class Device {
 
-    private enum DeviceType {
+    public enum DeviceType {
         IPhone, Android, Windows_PC, MacBook
     }
 
     @Id
-    private long id;
+    @GeneratedValue
+    private Long id;
 
     @Enumerated
     @Column
-    private DeviceType deviceType;
+    private DeviceType type;
 
-    @Column
-    private String Name;
+    @Column(unique = true)
+    private String name;
 
     @OneToOne(mappedBy = "device")
     private Rental rental;

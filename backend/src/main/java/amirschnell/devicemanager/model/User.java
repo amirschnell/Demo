@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +16,8 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    private long id;
+    @GeneratedValue
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String name;

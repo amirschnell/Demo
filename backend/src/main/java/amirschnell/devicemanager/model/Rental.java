@@ -9,7 +9,8 @@ import javax.persistence.*;
 public class Rental {
 
     @Id
-    private long id;
+    @GeneratedValue
+    private Long id;
 
     @OneToOne
     private Device device;
