@@ -11,7 +11,7 @@ public class Rental {
     @Id
     private long id;
 
-    @ManyToOne
+    @OneToOne
     private Device device;
 
     @ManyToOne

@@ -2,10 +2,7 @@ package amirschnell.devicemanager.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -24,4 +21,7 @@ public class Device {
 
     @Column
     private String Name;
+
+    @OneToOne(mappedBy = "device")
+    private Rental rental;
 }
