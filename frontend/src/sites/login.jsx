@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { userService } from '../services/userService';
 
-export default function Login5() {
+export default function Login() {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [submitted, setSubmitted] = useState(false);
@@ -13,7 +13,7 @@ export default function Login5() {
 
     userService.logout();
 
-    var handleSubmit = function (e) {
+    let handleSubmit = function (e) {
         e.preventDefault();
 
         setSubmitted(true);
