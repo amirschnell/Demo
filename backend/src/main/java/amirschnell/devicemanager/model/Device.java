@@ -17,10 +17,10 @@ public class Device {
     private Long id;
 
     @Enumerated
-    @Column
+    @Column(nullable = false)
     private DeviceType type;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @OneToOne(mappedBy = "device")
