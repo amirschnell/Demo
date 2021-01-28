@@ -32,4 +32,9 @@ public class DeviceRestController {
     private void addDevice(@RequestBody Device device) {
         deviceRepository.save(device);
     }
+
+    @GetMapping(path = "/types")
+    private List<Device.DeviceType> getAllTypes() {
+        return List.of(Device.DeviceType.values());
+    }
 }
